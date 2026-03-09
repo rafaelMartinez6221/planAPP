@@ -9,7 +9,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // --- ONDAS INFERIORES ---
+          
           Positioned(
             bottom: 0,
             left: 0,
@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
 
-          // --- CONTENIDO PRINCIPAL ---
+          
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      // --- CAMPO VISUAL: CORREO ---
+                      
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 20),
 
-                      // --- CAMPO VISUAL: CONTRASEÑA ---
+                      
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 35),
 
-                      // --- BOTÓN VISUAL: INICIAR SESIÓN ---
+                      
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 18),
