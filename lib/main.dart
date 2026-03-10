@@ -1,44 +1,38 @@
 import 'package:flutter/material.dart';
-// Importamos las tres pantallas para que estén disponibles
-import 'package:planapp/screens/login_screen.dart';
-import 'package:planapp/screens/register_screen.dart';
-import 'package:planapp/screens/planes_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/registro_gustos_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/detalle_lugar_screen.dart';
+import 'screens/favoritos_screen.dart';
+import 'screens/planes_screen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const PlanAppMaster());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PlanAppMaster extends StatelessWidget {
+  const PlanAppMaster({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PlanAPP',
       debugShowCheckedModeBanner: false,
+      title: 'PlanAPP Final',
       theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
         useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF6A5AE0),
       ),
-      // Usamos un PageView para que puedas ver las 3 pantallas al ejecutar
-      home: const AllScreensPreview(), 
-    );
-  }
-}
-
-class AllScreensPreview extends StatelessWidget {
-  const AllScreensPreview({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        children: const [
-          LoginScreen(),    // Desliza para ver
-          RegisterScreen(), // Desliza para ver
-          PlanesScreen(),   // Desliza para ver
-        ],
-      ),
+      // PARA PROBAR CADA VISTA: Cambia la clase en 'home'
+      home: const FavoritosScreen(), 
+      
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/gustos': (context) => const RegistroGustosScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/detalle': (context) => const DetalleLugarScreen(),
+        '/favoritos': (context) => const FavoritosScreen(),
+        '/planes': (context) => const PlanesScreen(),
+      },
     );
   }
 }
