@@ -9,7 +9,7 @@ class RegisterScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // ONDAS INFERIORES
+          // FONDO DE ONDAS
           Positioned(
             bottom: 0,
             left: 0,
@@ -20,7 +20,6 @@ class RegisterScreen extends StatelessWidget {
             ),
           ),
 
-          // CONTENIDO
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -28,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      // LOGO CONSTRUIDO (Pin + Estrella)
+                      // LOGO
                       SizedBox(
                         width: 100,
                         height: 100,
@@ -53,45 +52,49 @@ class RegisterScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      // CAMPO: NOMBRE (Visual)
+                      // CAMPOS DE TEXTO (Usando tu función _buildField)
                       _buildField(Icons.person_outline, "Nombre"),
-
                       const SizedBox(height: 15),
-
-                      // CAMPO: CORREO (Visual)
                       _buildField(Icons.check_box_outlined, "Correo Electrónico"),
-
                       const SizedBox(height: 15),
-
-                      // CAMPO: CONTRASEÑA (Visual)
                       _buildField(Icons.lock_outline, "Contraseña", isPassword: true),
 
                       const SizedBox(height: 35),
 
-                      // BOTÓN REGISTRARSE
-                      Container(
-                        width: double.infinity,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6A5AE0),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Registrarse",
-                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      // BOTÓN REGISTRARSE -> Navega a la pantalla de Gustos (Migue)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/gustos');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6A5AE0),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Registrarse",
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 25),
 
-                      // TEXTO INFERIOR
+                      // RETORNO AL LOGIN -> Navega de vuelta al Login
                       const Text("¿Ya tienes cuenta?", style: TextStyle(color: Colors.grey)),
                       const SizedBox(height: 5),
-                      const Text(
-                        "Inicia Sesión",
-                        style: TextStyle(color: Color(0xFF6A5AE0), fontWeight: FontWeight.bold),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        child: const Text(
+                          "Inicia Sesión",
+                          style: TextStyle(color: Color(0xFF6A5AE0), fontWeight: FontWeight.bold),
+                        ),
                       ),
                       const SizedBox(height: 50),
                     ],
@@ -105,7 +108,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  // Widget para crear los campos visuales idénticos al diseño
+  // WIDGET AUXILIAR PARA LOS CAMPOS
   Widget _buildField(IconData icon, String hint, {bool isPassword = false}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -129,7 +132,7 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-
+// PAINTER PERSONALIZADO
 class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

@@ -21,15 +21,15 @@ class PlanAppMaster extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         useMaterial3: true,
       ),
-      // PARA PROBAR CADA VISTA: Cambia la clase en 'home'
-      home: const FavoritosScreen(), 
+      
+      home: const LoginScreen(), 
       
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/gustos': (context) => const RegistroGustosScreen(),
         '/home': (context) => const HomeScreen(),
-        '/detalle': (context) => const DetalleLugarScreen(),
+        '/detalle_lugar': (context) => const DetalleLugarScreen(),
         '/favoritos': (context) => const FavoritosScreen(),
         '/planes': (context) => const PlanesScreen(),
       },

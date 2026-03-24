@@ -9,7 +9,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          
+          // FONDO DE ONDAS (WAVES)
           Positioned(
             bottom: 0,
             left: 0,
@@ -20,7 +20,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
 
-          
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -29,8 +28,7 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      
-                      // --- LOGO CREADO CON ICONOS (Igual al diseño) ---
+                      // LOGO CON ESTRELLA
                       SizedBox(
                         width: 100,
                         height: 100,
@@ -48,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                               child: const Icon(
                                 Icons.star,
                                 size: 35,
-                                color: Color(0xFFFFCC00), // Amarillo de la estrella
+                                color: Color(0xFFFFCC00),
                               ),
                             ),
                           ],
@@ -69,7 +67,7 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      
+                      // CAMPO CORREO (Simulado)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         decoration: BoxDecoration(
@@ -91,7 +89,7 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 20),
 
-                      
+                      // CAMPO CONTRASEÑA (Simulado)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         decoration: BoxDecoration(
@@ -115,28 +113,33 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 35),
 
-                      
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6A5AE0),
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF6A5AE0).withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Iniciar Sesión",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                      // BOTÓN INICIAR SESIÓN (Navegación al Home de Migue)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6A5AE0),
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF6A5AE0).withOpacity(0.3),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Iniciar Sesión",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -144,20 +147,25 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 30),
 
-                      // --- TEXTO INFERIOR VISUAL ---
+                      // SECCIÓN REGISTRO (Navegación a la pantalla de Valeria)
                       Column(
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "¿No tienes cuenta?",
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
-                          SizedBox(height: 5),
-                          Text(
-                            "Regístrate",
-                            style: TextStyle(
-                              color: Color(0xFF6A5AE0),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                          const SizedBox(height: 5),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: const Text(
+                              "Regístrate",
+                              style: TextStyle(
+                                color: Color(0xFF6A5AE0),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                         ],
