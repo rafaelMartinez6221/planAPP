@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  final _formKey = GlobalKey<FormState>();
+
+  // CONTROLADORES
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool obscurePassword = true;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void login() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.pushNamed(context, '/home');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +36,6 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // FONDO DE ONDAS (WAVES)
           Positioned(
             bottom: 0,
             left: 0,
@@ -25,154 +51,147 @@ class LoginScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // LOGO CON ESTRELLA
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              size: 100,
-                              color: Color(0xFF6A5AE0),
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 5,
-                              child: const Icon(
-                                Icons.star,
-                                size: 35,
-                                color: Color(0xFFFFCC00),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 10),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
 
-                      // TÍTULO
-                      const Text(
-                        "PlanAPP",
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF6A5AE0),
-                        ),
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      // CAMPO CORREO (Simulado)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.check_box, color: Color(0xFF6A5AE0)),
-                            const SizedBox(width: 10),
-                            Text(
-                              "Correo Electrónico",
-                              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // CAMPO CONTRASEÑA (Simulado)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.lock_outline, color: Color(0xFF6A5AE0)),
-                            const SizedBox(width: 10),
-                            Text(
-                              "Contraseña",
-                              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
-                            ),
-                            const Spacer(),
-                            const Icon(Icons.visibility_off, color: Colors.grey, size: 20),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 35),
-
-                      // BOTÓN INICIAR SESIÓN (Navegación al Home de Migue)
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/home');
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6A5AE0),
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF6A5AE0).withOpacity(0.3),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
+                        // LOGO
+                        SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: const [
+                              Icon(Icons.location_on, size: 100, color: Color(0xFF6A5AE0)),
+                              Positioned(
+                                top: 5,
+                                right: 5,
+                                child: Icon(Icons.star, size: 35, color: Color(0xFFFFCC00)),
                               ),
                             ],
                           ),
-                          child: const Center(
-                            child: Text(
-                              "Iniciar Sesión",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        const Text(
+                          "PlanAPP",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF6A5AE0),
+                          ),
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // EMAIL
+                        TextFormField(
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.email, color: Color(0xFF6A5AE0)),
+                            hintText: "Correo Electrónico",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Ingresa tu correo";
+                            }
+                            if (!value.contains('@')) {
+                              return "Correo inválido";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // PASSWORD
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: obscurePassword,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.lock, color: Color(0xFF6A5AE0)),
+                            hintText: "Contraseña",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  obscurePassword = !obscurePassword;
+                                });
+                              },
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Ingresa tu contraseña";
+                            }
+                            if (value.length < 6) {
+                              return "Mínimo 6 caracteres";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 35),
+
+                        // BOTÓN LOGIN
+                        GestureDetector(
+                          onTap: login,
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6A5AE0),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                "Iniciar Sesión",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                      // SECCIÓN REGISTRO (Navegación a la pantalla de Valeria)
-                      Column(
-                        children: [
-                          const Text(
-                            "¿No tienes cuenta?",
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                          const SizedBox(height: 5),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/register');
-                            },
-                            child: const Text(
-                              "Regístrate",
-                              style: TextStyle(
-                                color: Color(0xFF6A5AE0),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                        Column(
+                          children: [
+                            const Text(
+                              "¿No tienes cuenta?",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/register');
+                              },
+                              child: const Text(
+                                "Regístrate",
+                                style: TextStyle(
+                                  color: Color(0xFF6A5AE0),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 50),
-                    ],
+                          ],
+                        ),
+
+                        const SizedBox(height: 50),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -184,32 +203,40 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-
+// WAVE PAINTER (igual que el tuyo)
 class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
       ..color = const Color(0xFF6A5AE0).withOpacity(0.15)
       ..style = PaintingStyle.fill;
+
     var path1 = Path();
     path1.moveTo(0, size.height * 0.5);
-    path1.quadraticBezierTo(size.width * 0.25, size.height * 0.2, size.width * 0.5, size.height * 0.6);
-    path1.quadraticBezierTo(size.width * 0.75, size.height * 1.0, size.width, size.height * 0.3);
+    path1.quadraticBezierTo(size.width * 0.25, size.height * 0.2,
+        size.width * 0.5, size.height * 0.6);
+    path1.quadraticBezierTo(size.width * 0.75, size.height * 1.0,
+        size.width, size.height * 0.3);
     path1.lineTo(size.width, size.height);
     path1.lineTo(0, size.height);
     path1.close();
+
     canvas.drawPath(path1, paint1);
 
     var paint2 = Paint()
       ..color = const Color(0xFF6A5AE0).withOpacity(0.3)
       ..style = PaintingStyle.fill;
+
     var path2 = Path();
     path2.moveTo(0, size.height * 0.8);
-    path2.quadraticBezierTo(size.width * 0.3, size.height * 1.2, size.width * 0.7, size.height * 0.5);
-    path2.quadraticBezierTo(size.width * 0.9, size.height * 0.3, size.width, size.height * 0.6);
+    path2.quadraticBezierTo(size.width * 0.3, size.height * 1.2,
+        size.width * 0.7, size.height * 0.5);
+    path2.quadraticBezierTo(size.width * 0.9, size.height * 0.3,
+        size.width, size.height * 0.6);
     path2.lineTo(size.width, size.height);
     path2.lineTo(0, size.height);
     path2.close();
+
     canvas.drawPath(path2, paint2);
   }
 
