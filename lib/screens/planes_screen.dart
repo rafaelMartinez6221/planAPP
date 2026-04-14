@@ -12,7 +12,7 @@ class PlanesScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // BOTÓN ATRÁS: Ahora funciona para volver a la Home o al Detalle
+        // BOTÓN ATRÁS
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: purpleTheme),
           onPressed: () => Navigator.pop(context),
@@ -65,7 +65,7 @@ class PlanesScreen extends StatelessWidget {
 
                 // TARJETA MÁS POPULAR
                 _buildPlanCard(
-                  context, // Pasamos el contexto para la navegación
+                  context, 
                   title: "MÁS POPULAR",
                   tag: "★ MÁS POPULAR",
                   price: "\$19,900 / mes",
@@ -175,7 +175,7 @@ class PlanesScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      // NAVEGACIÓN: Al presionar, volvemos a la Home
+                      // NAVEGACIÓN
                       onPressed: () {
                         Navigator.pushNamed(context, '/home');
                       },
