@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../Servises/apiServises.dart';
+import 'register_screen.dart'; // Importamos la pantalla de registro como lo hace el profe
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,8 +10,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final _formKey = GlobalKey<FormState>();
+
+  // Variables lógicas del profesor
+  final _apiService = ApiService();
+  bool _isLoading = false;
 
   // CONTROLADORES
   final TextEditingController emailController = TextEditingController();
@@ -24,9 +29,35 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void login() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/home');
+  // Función de login fusionada
+  Future<void> login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      await _apiService.login(
+        emailController.text,
+        passwordController.text,
+      );
+
+      if (mounted) {
+        // Si sale bien, vamos al home
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString().replaceAll('Exception: ', '')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -45,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
               painter: BottomWavePainter(),
             ),
           ),
-
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -55,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-
                         // LOGO
                         SizedBox(
                           width: 100,
@@ -72,9 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-
                         const SizedBox(height: 10),
-
                         const Text(
                           "PlanAPP",
                           style: TextStyle(
@@ -83,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Color(0xFF6A5AE0),
                           ),
                         ),
-
                         const SizedBox(height: 40),
 
                         // EMAIL
@@ -107,7 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-
                         const SizedBox(height: 20),
 
                         // PASSWORD
@@ -141,31 +166,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-
                         const SizedBox(height: 35),
 
                         // BOTÓN LOGIN
                         GestureDetector(
-                          onTap: login,
+                          onTap: _isLoading ? null : login,
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(vertical: 18),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF6A5AE0),
+                              color: _isLoading ? Colors.grey : const Color(0xFF6A5AE0),
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Iniciar Sesión",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            child: Center(
+                              child: _isLoading
+                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  : const Text(
+                                      "Iniciar Sesión",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 30),
 
                         Column(
@@ -176,7 +201,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/register');
+                                // Navegación usando MaterialPageRoute como el profesor
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const RegisterScreen(),
+                                  ),
+                                );
                               },
                               child: const Text(
                                 "Regístrate",
@@ -188,7 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 50),
                       ],
                     ),
@@ -203,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// WAVE PAINTER (igual que el tuyo)
+// WAVE PAINTER
 class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

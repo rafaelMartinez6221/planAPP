@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Servises/apiServises.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,8 +9,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
   final _formKey = GlobalKey<FormState>();
+
+  // Variables lógicas del profesor
+  final _apiService = ApiService();
+  bool _isLoading = false;
 
   // CONTROLADORES
   final TextEditingController nameController = TextEditingController();
@@ -26,9 +30,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void register() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/gustos');
+  // Función de registro fusionada
+  Future<void> register() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      await _apiService.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+      );
+
+      if (mounted) {
+        // Si sale bien, vamos a la pantalla de gustos
+        Navigator.pushReplacementNamed(context, '/gustos');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString().replaceAll('Exception: ', '')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -38,7 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-
           // FONDO
           Positioned(
             bottom: 0,
@@ -59,7 +89,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-
                         // LOGO
                         SizedBox(
                           width: 100,
@@ -173,22 +202,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         // BOTÓN REGISTRAR
                         GestureDetector(
-                          onTap: register,
+                          onTap: _isLoading ? null : register,
                           child: Container(
                             width: double.infinity,
                             height: 55,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF6A5AE0),
+                              color: _isLoading ? Colors.grey : const Color(0xFF6A5AE0),
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Registrarse",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            child: Center(
+                              child: _isLoading
+                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  : const Text(
+                                      "Registrarse",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
@@ -202,7 +233,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/login');
+                            // Usamos el pop como lo hace el profesor para volver atrás
+                            Navigator.pop(context);
                           },
                           child: const Text(
                             "Inicia Sesión",
@@ -227,7 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-// WAVE
+// WAVE PAINTER
 class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
